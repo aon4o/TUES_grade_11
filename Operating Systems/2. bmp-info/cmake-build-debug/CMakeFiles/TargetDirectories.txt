@@ -1,0 +1,3 @@
+/home/alex/Desktop/bmp-info/cmake-build-debug/CMakeFiles/rebuild_cache.dir
+/home/alex/Desktop/bmp-info/cmake-build-debug/CMakeFiles/edit_cache.dir
+/home/alex/Desktop/bmp-info/cmake-build-debug/CMakeFiles/bmp_info.dir

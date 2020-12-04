@@ -1,0 +1,414 @@
+        -:    0:Source:/home/alex/Desktop/tail/main.c
+        -:    0:Graph:/home/alex/Desktop/tail/cmake-build-debug-coverage/CMakeFiles/tail.dir/main.c.gcno
+        -:    0:Data:/home/alex/Desktop/tail/cmake-build-debug-coverage/CMakeFiles/tail.dir/main.c.gcda
+        -:    0:Runs:1
+        -:    1://------------------------------------------------------------------------
+        -:    2:// NAME: Aleksandyr Naidenov
+        -:    3:// CLASS: XIa
+        -:    4:// NUMBER: 1
+        -:    5:// PROBLEM: #1
+        -:    6:// FILE NAME: main.c (unix file name)
+        -:    7:// FILE PURPOSE:
+        -:    8:// The purpose of this file is to recreate the standard UNIX command 'tail'.
+        -:    9://------------------------------------------------------------------------
+        -:   10:
+        -:   11:#include <sys/types.h>
+        -:   12:#include <stdio.h>
+        -:   13:#include <fcntl.h>
+        -:   14:#include <string.h>
+        -:   15:#include <unistd.h>
+        -:   16:#include <stdlib.h>
+        -:   17:
+        -:   18:#define SIZE 10000
+        -:   19:
+        -:   20:void get_tail(const char*, int);
+        -:   21:
+        -:   22://------------------------------------------------------------------------
+        -:   23:// FUNCTION: main
+        -:   24:// This is the main function of a C program.
+        -:   25:// PARAMETERS:
+        -:   26:// int argc
+        -:   27:// char *argv[]
+        -:   28://------------------------------------------------------------------------
+        -:   29:
+        1:   30:int main(int argc, char *argv[])
+        -:   31:{
+        -:   32://	IF STATEMENT TO CHOOSE WHETHER TO READ FROM STDIN OF FROM FILES
+        1:   33:	if (argc == 1)
+        1:   33-block  0
+        -:   34:	{
+    #####:   35:		get_tail("-", 0);
+    %%%%%:   35-block  0
+        -:   36:	}
+        -:   37:	else
+        -:   38:	{
+        1:   39:		int file_count = 1;
+        -:   40:
+        -:   41:		int headers;
+        1:   42:		if ((argc - 1) != 1) { headers = 1; }
+        1:   42-block  0
+        1:   42-block  1
+    #####:   43:		else { headers = 0; }
+    %%%%%:   43-block  0
+        -:   44:
+        -:   45://		A CYCLE FOR CALLING get_tail WITH EACH FILE
+        6:   46:		for (int files = argc - 1; files > 0; --files)
+        1:   46-block  0
+        6:   46-block  1
+        -:   47:		{
+        5:   48:			get_tail(argv[file_count], headers);
+        5:   48-block  0
+        -:   49:
+        5:   50:			if ((files) != 1)
+        -:   51:			{
+        4:   52:				write(STDOUT_FILENO, "\n", 1);
+        4:   52-block  0
+        -:   53:			}
+        -:   54:
+        -:   55://			MOVING THE FILE_COUNTER TO THE NEXT FILE
+        5:   56:			file_count++;
+        5:   56-block  0
+        -:   57:		}
+        -:   58:	}
+        -:   59:}
+        -:   60:
+        -:   61://------------------------------------------------------------------------
+        -:   62:// FUNCTION: get_tail
+        -:   63:// A function which prints the tail of a file.
+        -:   64:// PARAMETERS:
+        -:   65:// const char* file_name - The name of the file we want to process.
+        -:   66:// const int headers - A variable on which depends if headers
+        -:   67:// 					will be printed before the tails of each file.
+        -:   68://------------------------------------------------------------------------
+        -:   69:
+        5:   70:void get_tail(const char* file_name, const int headers)
+        -:   71:{
+        -:   72:	ssize_t read_result;
+        -:   73:
+        -:   74://	CHECKING IF WE NEED TO READ FROM A FILE OR STDIN
+        5:   75:	if (strcmp(file_name, "-") == 0)
+        5:   75-block  0
+        -:   76:	{
+        -:   77://		PRINTING A HEADER IF THERE ARE MORE THAN ONE FILES
+    #####:   78:		if (headers)
+    %%%%%:   78-block  0
+        -:   79:		{
+    #####:   80:			write(STDOUT_FILENO, "==> standard input <==\n", 23);
+    %%%%%:   80-block  0
+        -:   81:		}
+        -:   82:
+        -:   83://		SETTING UP THE READ_BUFFER AND THE NEW_LINE COUNTER
+    #####:   84:		char *buff = malloc(SIZE);
+    #####:   85:		int new_lines = 0;
+    #####:   86:		int read_bytes = 0;
+    %%%%%:   86-block  0
+        -:   87:		int print_from;
+        -:   88:
+        -:   89://		READING FROM STDIN 'TILL EOF
+        -:   90:		do
+        -:   91:		{
+    #####:   92:			read_result = read(STDIN_FILENO, buff+read_bytes, SIZE);
+    %%%%%:   92-block  0
+    #####:   93:			read_bytes += read_result;
+    #####:   94:			buff = realloc(buff, SIZE+read_bytes);
+    #####:   95:			if (read_result == -1)
+        -:   96:			{
+    #####:   97:				perror("tail: error reading 'standart input'");
+    %%%%%:   97-block  0
+    #####:   98:				free(buff);
+    #####:   99:				return;
+        -:  100:			}
+        -:  101:		}
+    #####:  102:		while (read_result != 0);
+    %%%%%:  102-block  0
+        -:  103:
+        -:  104://		CHECKING IF THE BUFFER IS EMPTY
+    #####:  105:		if (read_bytes == 0 || read_bytes == 1)
+    %%%%%:  105-block  0
+    %%%%%:  105-block  1
+        -:  106:		{
+    #####:  107:			print_from = 0;
+    %%%%%:  107-block  0
+        -:  108:		}
+        -:  109:		else
+        -:  110:		{
+        -:  111://			COUNTING THE NEW_LINES IN THE READ PART
+    #####:  112:			print_from = read_bytes-1;
+    #####:  113:			if (buff[print_from] == '\n')
+    %%%%%:  113-block  0
+        -:  114:			{
+    #####:  115:				--print_from;
+    %%%%%:  115-block  0
+        -:  116:			}
+    #####:  117:			for (; print_from != 0; --print_from)
+    %%%%%:  117-block  0
+    %%%%%:  117-block  1
+    %%%%%:  117-block  2
+        -:  118:			{
+    #####:  119:				if (buff[print_from] == '\n')
+    %%%%%:  119-block  0
+        -:  120:				{
+    #####:  121:					++new_lines;
+    #####:  122:					if (new_lines == 10)
+    %%%%%:  122-block  0
+        -:  123:					{
+    #####:  124:						++print_from;
+    #####:  125:						break;
+    %%%%%:  125-block  0
+        -:  126:					}
+        -:  127:				}
+        -:  128:			}
+        -:  129:
+        -:  130://			CHECKING IF THE CYCLE SHOULD STOP OR CONTINUE
+    #####:  131:			if (new_lines != 10)
+    %%%%%:  131-block  0
+        -:  132:			{
+    #####:  133:				print_from = 0;
+    %%%%%:  133-block  0
+        -:  134:			}
+        -:  135:		}
+        -:  136:
+        -:  137://		WRITING THE READ PART TO STDOUT AND CHECKING FOR ERRORS
+    #####:  138:		ssize_t counter = print_from;
+    %%%%%:  138-block  0
+        -:  139:		do
+        -:  140:		{
+    #####:  141:			ssize_t write_result = write(STDOUT_FILENO, buff + counter, read_bytes - counter);
+    %%%%%:  141-block  0
+    #####:  142:			if (write_result == -1)
+        -:  143:			{
+    #####:  144:				perror("tail: error writing 'standard output'");
+    %%%%%:  144-block  0
+    #####:  145:				return;
+        -:  146:			}
+        -:  147:			else
+        -:  148:			{
+    #####:  149:				counter += write_result;
+        -:  150:			}
+    #####:  151:		} while (counter != read_bytes);
+    %%%%%:  151-block  0
+        -:  152:
+        -:  153://		FREEING THE BUFFER
+    #####:  154:		free(buff);
+    %%%%%:  154-block  0
+        -:  155:	}
+        -:  156:	else
+        -:  157:	{
+        -:  158://		OPENING THE FILE AND CHECKING FOR ERRORS
+        -:  159://		ELSE CONTINUE WITH PROCESSING THE FILE
+        5:  160:		int file = open(file_name, O_RDONLY);
+        5:  160-block  0
+        5:  161:		if (file == -1)
+        -:  162:		{
+        -:  163:			char open_error[100];
+        5:  164:			open_error[0] = '\0';
+        5:  165:			strcat(open_error, "tail: cannot open '");
+        5:  166:			strcat(open_error, file_name);
+        5:  167:			strcat(open_error, "' for reading");
+        5:  168:			perror(open_error);
+        5:  168-block  0
+        -:  169:		}
+        -:  170:		else
+        -:  171:		{
+        -:  172://			PRINTING A HEADER IF THERE ARE MORE THAN ONE FILES
+    #####:  173:			if (headers)
+    %%%%%:  173-block  0
+        -:  174:			{
+    #####:  175:				write(STDOUT_FILENO, "==> ", 4);
+    %%%%%:  175-block  0
+    #####:  176:				write(STDOUT_FILENO, file_name, strlen(file_name));
+    #####:  177:				write(STDOUT_FILENO, " <==\n", 5);
+        -:  178:			}
+        -:  179:
+        -:  180://			SETTING UP THE FILE READ_BUFFER AND THE NEW_LINE COUNTER
+        -:  181:			char buff[SIZE];
+    #####:  182:			int new_lines = 0;
+        -:  183:
+        -:  184://			INITIAL READING FROM THE FILE AND CHECKING FOR ERRORS
+        -:  185://			ELSE CONTINUE WITH PROCESSING THE FILE
+    #####:  186:			lseek(file, -SIZE, SEEK_END);
+    %%%%%:  186-block  0
+    #####:  187:			read_result = read(file, buff, SIZE);
+    #####:  188:			if (read_result == -1)
+        -:  189:			{
+        -:  190:				char read_error[100];
+    #####:  191:				strcat(read_error, "tail: error reading '");
+    #####:  192:				strcat(read_error, file_name);
+    #####:  193:				strcat(read_error, "'");
+    #####:  194:				perror(read_error);
+    %%%%%:  194-block  0
+    #####:  195:				read_error[0] = '\0';
+        -:  196:			}
+        -:  197:			else
+        -:  198:			{
+        -:  199:
+        -:  200://				CHECKING IF THE FILE IS SMALLER THAN THE BUFFER SO WE KNOW HOW TO PRINT IT
+        -:  201:				int big_file;
+    #####:  202:				if (read_result == SIZE){big_file = 1;}
+    %%%%%:  202-block  0
+    %%%%%:  202-block  1
+    #####:  203:				else {big_file = 0;}
+    %%%%%:  203-block  0
+        -:  204:
+        -:  205://				CHECKING IF THE FILE IS EMPTY
+    #####:  206:				if (read_result == 0)
+    %%%%%:  206-block  0
+        -:  207:				{
+    #####:  208:					return;
+    %%%%%:  208-block  0
+    %%%%%:  208-block  1
+        -:  209:				}
+        -:  210://				CHECKING IF THERE'S ONLY ONE BYTE IN THE FILE
+    #####:  211:				else if (read_result == 1)
+    %%%%%:  211-block  0
+        -:  212:				{
+    #####:  213:					lseek(file, 0, SEEK_SET);
+    %%%%%:  213-block  0
+        -:  214:					char new_buff[1];
+    #####:  215:					read_result = read(file, new_buff, sizeof(new_buff));
+    #####:  216:					if (read_result == -1)
+        -:  217:					{
+    #####:  218:						perror("read");
+    %%%%%:  218-block  0
+        -:  219:					}
+    #####:  220:					ssize_t write_result = write(STDOUT_FILENO, new_buff, 1);
+    %%%%%:  220-block  0
+    #####:  221:					if (write_result == -1)
+        -:  222:					{
+    #####:  223:						perror("tail: error writing 'standard output'");
+    %%%%%:  223-block  0
+    #####:  224:						return;
+        -:  225:					}
+        -:  226:				}
+        -:  227:				else
+        -:  228:				{
+        -:  229://					CYCLE FOR GETTING THE NUMBER OF THE BYTE WHERE THE 10TH NEW LINE FROM THE END OF THE FILE
+    #####:  230:					int buff_num = -1;
+    %%%%%:  230-block  0
+        -:  231:					while (1)
+    #####:  232:					{
+    %%%%%:  232-block  0
+    #####:  233:						buff_num += 1;
+        -:  234:
+        -:  235://					COUNTING THE NEW_LINES IN THE READ PART
+    #####:  236:						ssize_t i = read_result-2;
+    #####:  237:						for (; i != 0; --i)
+    %%%%%:  237-block  0
+    %%%%%:  237-block  1
+    %%%%%:  237-block  2
+        -:  238:						{
+    #####:  239:							if (buff[i] == '\n')
+    %%%%%:  239-block  0
+        -:  240:							{
+    #####:  241:								++new_lines;
+    #####:  242:								if (new_lines == 10)
+    %%%%%:  242-block  0
+        -:  243:								{
+    #####:  244:									read_result = i + 1;
+    #####:  245:									break;
+    %%%%%:  245-block  0
+        -:  246:								}
+        -:  247:							}
+        -:  248:						}
+        -:  249:
+        -:  250://					CHECKING IF THE CYCLE SHOULD STOP OR CONTINUE
+    #####:  251:						if (new_lines == 10)
+    %%%%%:  251-block  0
+        -:  252:						{
+    #####:  253:							break;
+    %%%%%:  253-block  0
+        -:  254:						}
+    #####:  255:						if (!big_file)
+    %%%%%:  255-block  0
+        -:  256:						{
+    #####:  257:							read_result = 0;
+    #####:  258:							break;
+    %%%%%:  258-block  0
+        -:  259:						}
+        -:  260:
+        -:  261://					MOVING THE FILE DESCRIPTOR AND READING THE NEXT PART OF THE FILE IF NECESSERY
+    #####:  262:						lseek(file, -(SIZE*(buff_num+2)), SEEK_END);
+    %%%%%:  262-block  0
+    #####:  263:						read_result = read(file, buff, SIZE);
+    #####:  264:						if (read_result == -1)
+        -:  265:						{
+        -:  266:							char read_error[100];
+    #####:  267:							read_error[0] = '\0';
+    #####:  268:							strcat(read_error, "tail: error reading '");
+    #####:  269:							strcat(read_error, file_name);
+    #####:  270:							strcat(read_error, "'");
+    #####:  271:							perror(read_error);
+    %%%%%:  271-block  0
+    #####:  272:							read_error[0] = '\0';
+        -:  273:						}
+        -:  274:					}
+        -:  275:
+        -:  276://					MOVING THE FILE DESCRIPTOR TO THE 10TH NEW LINE
+    #####:  277:					if (big_file)
+    %%%%%:  277-block  0
+        -:  278:					{
+    #####:  279:						lseek(file, -((buff_num+1)*SIZE-read_result), SEEK_END);
+    %%%%%:  279-block  0
+        -:  280:					}
+        -:  281:					else
+        -:  282:					{
+    #####:  283:						lseek(file, (buff_num*SIZE + read_result), SEEK_SET);
+    %%%%%:  283-block  0
+        -:  284:					}
+        -:  285:
+        -:  286://					READING THE PART OF THE FILE WHICH SHOULD BE PRINTED
+    #####:  287:					char new_buff[SIZE*(buff_num+1)];
+    #####:  288:					read_result = read(file, new_buff, sizeof(new_buff));
+    %%%%%:  288-block  0
+    #####:  289:					if (read_result == -1)
+        -:  290:					{
+    #####:  291:						perror("read");
+    %%%%%:  291-block  0
+        -:  292:					}
+        -:  293:
+        -:  294://					WRITING THE READ PART TO STDOUT AND CHECKING FOR ERRORS
+    #####:  295:					for (ssize_t counter = 0; counter != read_result;)
+    %%%%%:  295-block  0
+    %%%%%:  295-block  1
+        -:  296:					{
+    #####:  297:						ssize_t write_result = write(STDOUT_FILENO, new_buff + counter, read_result - counter);
+    %%%%%:  297-block  0
+    #####:  298:						if (write_result == -1)
+        -:  299:						{
+    #####:  300:							perror("tail: error writing 'standard output'");
+    %%%%%:  300-block  0
+    #####:  301:							return;
+        -:  302:						}
+        -:  303:						else
+        -:  304:						{
+    #####:  305:							counter += write_result;
+        -:  306://						PRINTING A NEW LINE AFTER THE END OF THE FILE
+    #####:  307:							if (read_result == 0)
+    %%%%%:  307-block  0
+        -:  308:							{
+        -:  309://							write(STDOUT_FILENO, "\n", 1);
+    #####:  310:								break;
+    %%%%%:  310-block  0
+        -:  311:							}
+        -:  312:						}
+        -:  313:					}
+        -:  314:				}
+        -:  315:			}
+        -:  316:
+        -:  317://			CLOSING THE FILE AND CHECKING FOR ERRORS
+    #####:  318:			int close_result = close(file);
+    %%%%%:  318-block  0
+    #####:  319:			if (close_result == -1)
+        -:  320:				{
+        -:  321:					char close_error[100];
+    #####:  322:					close_error[0] = '\0';
+    #####:  323:					strcat(close_error, "tail: error reading '");
+    #####:  324:					strcat(close_error, file_name);
+    #####:  325:					strcat(close_error, "'");
+    #####:  326:					perror(close_error);
+    %%%%%:  326-block  0
+    #####:  327:					close_error[0] = '\0';
+        -:  328:				}
+        -:  329:		}
+        -:  330:	}
+        -:  331:}

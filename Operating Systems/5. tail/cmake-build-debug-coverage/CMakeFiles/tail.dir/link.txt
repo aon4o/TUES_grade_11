@@ -1,0 +1,1 @@
+/usr/bin/cc --coverage -g   CMakeFiles/tail.dir/main.c.o  -o tail 

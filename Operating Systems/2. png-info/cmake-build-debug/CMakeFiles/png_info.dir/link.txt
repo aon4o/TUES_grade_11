@@ -1,0 +1,1 @@
+/usr/bin/cc -g   CMakeFiles/png_info.dir/main.c.o CMakeFiles/png_info.dir/read.c.o  -o png_info 

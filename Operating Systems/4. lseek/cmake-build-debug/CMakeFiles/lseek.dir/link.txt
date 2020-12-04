@@ -1,0 +1,1 @@
+/usr/bin/cc -g   CMakeFiles/lseek.dir/main.c.o  -o lseek 
