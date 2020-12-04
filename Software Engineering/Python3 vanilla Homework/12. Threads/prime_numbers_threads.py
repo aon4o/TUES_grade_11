@@ -1,0 +1,40 @@
+from datetime import datetime
+from PrimeNumbers import PrimeNumbers
+
+duration = datetime.now()
+
+t1 = PrimeNumbers(1,100)
+t2 = PrimeNumbers(100,200)
+t3 = PrimeNumbers(200,300)
+t4 = PrimeNumbers(300,400)
+t5 = PrimeNumbers(400,500)
+t6 = PrimeNumbers(500,600)
+t7 = PrimeNumbers(600,700)
+t8 = PrimeNumbers(700,800)
+t9 = PrimeNumbers(800,900)
+t10 = PrimeNumbers(900,1000)
+
+t1.start()
+t2.start()
+t3.start()
+t4.start()
+t5.start()
+t6.start()
+t7.start()
+t8.start()
+t9.start()
+t10.start()
+
+t1.join()
+t2.join()
+t3.join()
+t4.join()
+t5.join()
+t6.join()
+t7.join()
+t8.join()
+t9.join()
+t10.join()
+
+t1.print_primes()
+print("Time for execution - " + str(datetime.now() - duration))

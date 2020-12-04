@@ -1,0 +1,9 @@
+1. Exceptions
+Exceptions are useful when we want to terminate our program when error occurs.
+We don't want our code to continue executing with wrong data,
+so we make it stop and tell us where and what the problem is.
+
+2. Errors
+"Try...Except" blocks or just printing out to the screen what the problem is,
+is useful when we want to continue executing our code even with something wrong in it.
+This method may be used when the error is about a part of the code, which does not affect the remaining code.
