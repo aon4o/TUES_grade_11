@@ -1,0 +1,1 @@
+/usr/bin/cc -g   CMakeFiles/watch.dir/main.c.o  -o watch 
