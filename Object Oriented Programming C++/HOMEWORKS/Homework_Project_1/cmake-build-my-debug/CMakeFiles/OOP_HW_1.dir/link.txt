@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/OOP_HW_1.dir/main.cpp.o CMakeFiles/OOP_HW_1.dir/Package.cpp.o CMakeFiles/OOP_HW_1.dir/Router.cpp.o  -o OOP_HW_1 
