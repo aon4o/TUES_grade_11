@@ -103,7 +103,7 @@ void Router::send_package(const Package &package) {
 				if (it.ip == package.get_receiver_ip()) {
 					it.packages_sent++;
 					connected_routers[it.id]->send_package(package);
-//							SORTING THE ROUTING_TABLE LIST
+//					SORTING THE ROUTING_TABLE LIST
 					if (it.packages_sent % 10 == 0) {
 						this->routing_table.sort();
 						this->routing_table.reverse();
@@ -121,6 +121,11 @@ void Router::send_package(const Package &package) {
 					if (route.ip == package.get_receiver_ip()) {
 						cout << "Route for the package found. Redirecting..." << endl;
 						route.packages_sent++;
+//		    			SORTING THE ROUTING_TABLE LIST
+					    if (route.packages_sent % 10 == 0) {
+						    this->routing_table.sort();
+						    this->routing_table.reverse();
+					    }
 						connected_routers[route.id]->send_package(package);
 						return;
 					}
