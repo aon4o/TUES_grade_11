@@ -1,0 +1,1 @@
+drop database guest_house;
