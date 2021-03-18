@@ -1,0 +1,30 @@
+package bg.elsys.exam;
+
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+class KarateClubTest {
+
+    @BeforeEach
+    void setUp() {
+    }
+
+    @AfterEach
+    void tearDown() {
+    }
+
+    @Test
+    void train() {
+    }
+
+    @Test
+    void addTrainer() {
+    }
+
+    @Test
+    void addTrainee() {
+    }
+}
