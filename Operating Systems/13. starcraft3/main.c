@@ -140,7 +140,6 @@ int main(int argc, char *argv[]) {
 	}
 
 //	READING FOR COMMANDS
-
 	while (1)
 	{
 		char buff;
@@ -154,34 +153,37 @@ int main(int argc, char *argv[]) {
 			printf("No more space.");
 		} else {
 			if (buff == 'm') {
+				if (pthread_mutex_lock(&command_center) != 0)
+				{
+					perror("pthread_mutex_lock");
+					free(scvs);
+					return 0;
+				}
+
 				if (minerals >= 50) {
-					if (pthread_mutex_lock(&command_center) != 0)
-					{
-						perror("pthread_mutex_lock");
-						free(scvs);
-						return 0;
-					}
 					minerals -= 50;
 					sleep(1);
 					++marines;
 					printf("You wanna piece of me, boy?\n");
-					if (pthread_mutex_unlock(&command_center) != 0)
-					{
-						perror("pthread_mutex_unlock");
-						free(scvs);
-						return 0;
-					}
 				} else {
 					printf("Not enough minerals.\n");
 				}
+
+				if (pthread_mutex_unlock(&command_center) != 0)
+				{
+					perror("pthread_mutex_unlock");
+					free(scvs);
+					return 0;
+				}
 			} else if (buff == 's') {
+				if (pthread_mutex_lock(&command_center) != 0)
+				{
+					perror("pthread_mutex_lock");
+					free(scvs);
+					return 0;
+				}
+
 				if (minerals >= 50) {
-					if (pthread_mutex_lock(&command_center) != 0)
-					{
-						perror("pthread_mutex_lock");
-						free(scvs);
-						return 0;
-					}
 					minerals -= 50;
 					sleep(4);
 					++scvs_number;
@@ -192,18 +194,18 @@ int main(int argc, char *argv[]) {
 						return 0;
 					}
 					printf("SCV good to go, sir.\n");
-					if (pthread_mutex_unlock(&command_center) != 0)
-					{
-						perror("pthread_mutex_unlock");
-						free(scvs);
-						return 0;
-					}
 				} else {
 					printf("Not enough minerals.\n");
 				}
+
+				if (pthread_mutex_unlock(&command_center) != 0)
+				{
+					perror("pthread_mutex_unlock");
+					free(scvs);
+					return 0;
+				}
 			}
 		}
-
 //		CHECKING IF THE PROGRAM SHOULD STOP
 		if (marines == 20) {
 			break;
