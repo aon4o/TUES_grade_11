@@ -44,11 +44,15 @@ public class Base implements Runnable
             }
         }
 
+//        WAITING FOR THE WORKERS TO END
+        while (!workers.isEmpty()) {
+            workers.removeIf(worker -> worker.done);
+        }
+
 //        PRINTING END MESSAGE
         System.out.println("Initial workers: 2");
         System.out.println("Current workers: " + workers.size());
         System.out.println("Current crystals in base: " + crystals);
+        System.out.println("Current crystal blocks: 0");
     }
-
-
 }

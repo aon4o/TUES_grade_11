@@ -9,6 +9,7 @@ public class Worker implements Runnable
     protected int crystals = 0;
     Base base;
     ArrayList<CrystalBlock> crystalBlocks;
+    boolean done = false;
 
     protected Worker(int id, Base base) {
         this.id = id;
@@ -24,11 +25,10 @@ public class Worker implements Runnable
 
         while (true)
         {
-//            INITIAL SLEEP
-            try {
-                Thread.sleep((long) (0.5 * 1000));
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+//            STOPPING THE WORKER
+            if (crystalBlocks.isEmpty()) {
+                done = true;
+                while (true);
             }
 
             currentBlock = null;
@@ -112,6 +112,13 @@ public class Worker implements Runnable
                             base.crystalsLock.unlock();
                             System.out.println("Worker with id " + (id) + " returned with " + crystals + " crystals.");
                             crystals = 0;
+                        }
+
+//                        GETTING REST
+                        try {
+                            Thread.sleep((long) (0.5 * 1000));
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
                         }
 
                         endFlag = true;
